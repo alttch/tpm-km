@@ -48,7 +48,7 @@ Install script will copy:
 * /usr/local/etc/tpm_km - configuration file
 
 * It's also strongly recommended to configure UEFI Secure Boot and use grub >=
-  2.04 (or systemd-boot), as grub below 2.04 doesn't work with TPM and your
+  2.04 (or systemd-boot), as grub prior 2.04 doesn't work with TPM and your
   system can be owned if someone put own kernel or initrd.
 
 ## Generate key and seal it to TPM
