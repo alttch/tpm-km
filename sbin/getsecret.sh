@@ -11,7 +11,9 @@ fi
 KEY=
 SUCCESS=1
 
-for i in {0..1}; do
+L=${#PCRS[@]}
+END=$(($L-1))
+for i in $(seq 0 $END); do
   K=`tpm2_nvread -x ${ADDRS[$i]} -a ${ADDRS[$i]} -L sha256:${PCRS[$i]} -T ${TPM} | tr -d '\0'`
   if [ $? -ne 0 ] || [ ! "$K" ]; then
     printf "\e[91m" >&2
