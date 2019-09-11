@@ -15,12 +15,6 @@ tpm-km can:
 
 ## Setup
 
-* Insert TPM2 module and clear it
-
-```shell
-    sudo tpm2_takeownership -c
-```
-
 * Install *dialog*, *tpm2-tools* (make sure you have 3.x) and *figlet*
   (optional)
 
@@ -28,12 +22,18 @@ tpm-km can:
     sudo apt -y install dialog tpm2-tools figlet
 ```
 
+* Clear TPM2 module and take ownership
+
+```shell
+    sudo tpm2_takeownership -c
+```
+
 * If you have graphics splash screen - remove it, otherwise you'll not see
   PIN/password dialog windows: make sure there's no *splash* in
   */etc/default/grub* and if so - remove it and run *update_grub* to apply new
   configuration.
 
-* Install tpm-ks
+* Install tpm-km
 
 ```shell
     sudo ./install.sh
