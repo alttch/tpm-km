@@ -76,7 +76,7 @@ Install script will copy:
 * Remake initial ramdisk:
 
 ```shell
-    update-initramfs -u -v
+    sudo update-initramfs -u -v
 ```
 
 It's also recommended to backup your previous initrd\*.img files to return them
