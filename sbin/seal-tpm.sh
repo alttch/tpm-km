@@ -40,7 +40,7 @@ done
 if [ $CHECKED -ne 1 ]; then
  echo
  print_err "Abort"
- #exit 10
+ exit 10
 fi
 
 KEY=`cat ${KEYFILE} | openssl enc -aes-256-cbc -pbkdf2 -k ${PIN} -base64`
