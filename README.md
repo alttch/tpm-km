@@ -113,6 +113,9 @@ PIN, key file location, PCR sets, TPM addresses, dialog args (e.g. remove
 
 Everything else can be configured inside scripts code :)
 
+Note: after all changes in /usr/local/etc/tpm_km you must rebuild initial
+ramdisk.
+
 ### Does it works with TPM1.2?
 
 No
