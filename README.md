@@ -119,7 +119,7 @@ No
 
 ### Where can I get grub >= 2.04?
 
-Grub 2.04 is already included into RHEL 8.0, Fedora 30, Ubuntu 19.10 and may be
+Grub 2.04 is already included into RHEL 8.0, Fedora 30, Ubuntu 19.10 and maybe
 some other Linux distros. 
 
 ### Why secret key is being split?
