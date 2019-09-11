@@ -1,0 +1,24 @@
+#!/bin/sh
+
+PREREQ=""
+prereqs()
+ {
+     echo "$PREREQ"
+ }
+case $1 in
+ prereqs)
+     prereqs
+     exit 0
+     ;;
+esac
+. /usr/share/initramfs-tools/hook-functions
+copy_exec /usr/bin/tpm2_nvread || exit 1
+cp -v /usr/lib/x86_64-linux-gnu/libtss2-tcti-device.so* ${DESTDIR}/usr/lib/ || exit 1
+copy_exec /bin/bash || exit 1
+copy_exec /sbin/getsecret.sh || exit 1
+copy_exec /usr/bin/openssl || exit 1
+copy_exec /usr/bin/dialog
+cp -v /usr/local/etc/tpm_km ${DESTDIR}/etc/ || exit 1
+mkdir -p ${DESTDIR}/lib/terminfo/l || exit 1
+cp -v /lib/terminfo/l/linux ${DESTDIR}/lib/terminfo/l/ || exit 1
+exit 0
