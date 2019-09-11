@@ -116,7 +116,7 @@ Everything else can be configured inside scripts code :)
 Note: after any change in /usr/local/etc/tpm_km you must rebuild initial
 ramdisk.
 
-### Does it works with TPM1.2?
+### Does it work with TPM1.2?
 
 No
 
