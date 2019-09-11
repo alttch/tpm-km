@@ -2,3 +2,5 @@ PIN=
 KEYFILE=/secret.key
 PCRS=(0,1,2,4,7,8,9,10 0,2,3,4,7,8,10,14)
 ADDRS=(0x1500001 0x1500100)
+DIALOG_ARGS="--clear --insecure"
+TPM=device:/dev/tmp0
