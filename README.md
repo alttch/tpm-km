@@ -124,7 +124,7 @@ some other Linux distros.
 
 ### Why secret key is being split?
 
-By default, key in TPM is split in 2 chunks. TPM 2.0 specification doesn't
+By default, tpm-km splits key in 2 chunks. TPM 2.0 specification doesn't
 allow TPM policy to use more than 8 PCRs at once. With 2 chunks you can use
 almost all filled PCRs and make system protection much stronger. Just make sure
 PCRs 0,2,4,7 (and 9 for grub) are present in both sets.
