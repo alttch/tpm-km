@@ -17,7 +17,7 @@ cp -v /usr/lib/x86_64-linux-gnu/libtss2-tcti-device.so* ${DESTDIR}/usr/lib/ || e
 copy_exec /bin/bash || exit 1
 copy_exec /sbin/getsecret.sh || exit 1
 copy_exec /usr/bin/openssl || exit 1
-copy_exec /usr/bin/dialog
+copy_exec /usr/bin/dialog || exit 1
 cp -v /usr/local/etc/tpm_km ${DESTDIR}/etc/ || exit 1
 mkdir -p ${DESTDIR}/lib/terminfo/l || exit 1
 cp -v /lib/terminfo/l/linux ${DESTDIR}/lib/terminfo/l/ || exit 1
