@@ -30,7 +30,7 @@ tpm-km can:
 
 * If you have graphics splash screen - remove it, otherwise you'll not see
   PIN/password dialog windows: make sure there's no *splash* in
-  */etc/default/grub* and if so - remove it and run *update_grub* to apply new
+  */etc/default/grub*, if exists - remove it and run *update_grub* to apply new
   configuration.
 
 * Install tpm-km
