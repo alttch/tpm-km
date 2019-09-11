@@ -28,6 +28,11 @@ tpm-km can:
     sudo apt -y install dialog tpm2-tools figlet
 ```
 
+* If you have graphics splash screen - remove it, otherwise you'll not see
+  PIN/password dialog windows: make sure there's no *splash* in
+  */etc/default/grub* and if so - remove it and run *update_grub* to apply new
+  configuration.
+
 * Install tpm-ks
 
 ```shell
@@ -77,11 +82,6 @@ Install script will copy:
 It's also recommended to backup your previous initrd\*.img files to return them
 if something go wrong.
 
-* If you have graphics splash screen - remove it, otherwise you'll not see
-  PIN/password dialog windows: make sure there's no *splash* in
-  */etc/default/grub* and if so - remove it and run *update_grub* to apply new
-  configuration.
- 
 * **Reboot** your system with new ramdisk. TPM reader script will report an
   error, that's fine. Enter your usual luks password, when prompted.
 
