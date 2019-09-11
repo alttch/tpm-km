@@ -129,7 +129,7 @@ allow TPM policy with more than 8 PCRs at once. With 2 chunks you can use
 almost all filled PCRs and make system protection much stronger. Just make sure
 PCRs 0,2,4,7 (and 9 for grub) are present in both sets.
 
-### Can PIN be only numeric?
+### Should PIN be only numeric?
 
 In tpm-km, PIN is just called "PIN", because most of encrypted disk mangers use
 numeric PINs. But no - it can be alpha-numeric and include special symbols.
