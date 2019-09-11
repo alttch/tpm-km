@@ -77,6 +77,11 @@ Install script will copy:
 It's also recommended to backup your previous initrd\*.img files to return them
 if something go wrong.
 
+* If you have graphics splash screen - remove it, otherwise you'll not see
+  PIN/password dialog windows: make sure there's no *splash* in
+  */etc/default/grub* and if so - remove it and run *update_grub* to apply new
+  configuration.
+ 
 * **Reboot** your system with new ramdisk. TPM reader script will report an
   error, that's fine. Enter your usual luks password, when prompted.
 
@@ -86,7 +91,8 @@ if something go wrong.
     sudo /usr/local/sbin/seal-tpm.sh
 ```
 
-You'll be prompted for PIN twice.
+You'll be prompted for PIN, twice.
+
 * Reboot again and enter your PIN instead of password. If it works - congrats,
   you have TPM2+luks with PIN protection.
 
@@ -122,3 +128,9 @@ By default, key in TPM is split in 2 chunks. TPM 2.0 specification doesn't
 allow TPM policy to use more than 8 PCRs at once. With 2 chunks you can use
 almost all defined PCRs and make system protection much stronger. Just make
 sure PCRs 0,2,4,7 (and 9 for grub) are present in both sets.
+
+### Can PIN be only numeric?
+
+In tpm-ks, PIN is just called "PIN", because most of encrypted disk mangers use
+numeric PINS. But no - it can be alpha-numeric and include special symbols.
+It's up to you.
