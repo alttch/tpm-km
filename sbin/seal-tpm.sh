@@ -14,17 +14,6 @@ if [ ! $PCRS ] || [ ! $ADDRS ] || [ ! $KEYFILE ] || [ ! $TPM ]; then
   exit 11
 fi
 
-while [ ! $PIN ]; do
-  PIN=$(dialog ${DIALOG_ARGS} --passwordbox "Define PIN:" 10 30 3>&1 1>&2 2>&3)
-  PIN2=$(dialog ${DIALOG_ARGS} --passwordbox "Verify PIN:" 10 30 3>&1 1>&2 2>&3)
-  [ ! $PIN ] || [ ! $PIN2 ] && exit 0
-  if [ "x$PIN" != "x$PIN2" ]; then
-    print_err "PINs don't match"
-    PIN=
-    sleep 1
-  fi
-done
-
 CHECKED=1
 for pcr in `echo ${PCRS} | tr "," "\n" | tr " " "\n"|sort -n|uniq`; do
   VAL=`tpm2_pcrlist -L sha256:${pcr} -T ${TPM} |tail -1|awk '{ print $3 }'`
@@ -42,6 +31,17 @@ if [ $CHECKED -ne 1 ]; then
  print_err "Abort"
  exit 10
 fi
+
+while [ ! $PIN ]; do
+  PIN=$(dialog ${DIALOG_ARGS} --passwordbox "Define PIN:" 10 30 3>&1 1>&2 2>&3)
+  PIN2=$(dialog ${DIALOG_ARGS} --passwordbox "Verify PIN:" 10 30 3>&1 1>&2 2>&3)
+  [ ! $PIN ] || [ ! $PIN2 ] && exit 0
+  if [ "x$PIN" != "x$PIN2" ]; then
+    print_err "PINs don't match"
+    PIN=
+    sleep 1
+  fi
+done
 
 KEY=`cat ${KEYFILE} | openssl enc -aes-256-cbc -pbkdf2 -k ${PIN} -base64`
 if [ $? -ne 0 ]; then
