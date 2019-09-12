@@ -123,7 +123,12 @@ No
 ### Where can I get grub >= 2.04?
 
 Grub 2.04 is already included into RHEL 8.0, Fedora 30, Ubuntu 19.10 and maybe
-some other Linux distros. 
+some other Linux distros.
+
+### What if I don't use grub?
+
+If you don't use grub (e.g. use systemd-boot instead), remove PCRs 8 and 9 from
+/usr/local/etc/tpm_km (unless they're filled by your loader.
 
 ### Why secret key is being split?
 
