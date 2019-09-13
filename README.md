@@ -128,7 +128,7 @@ some other Linux distros.
 ### What if I don't use grub?
 
 If you don't use grub (e.g. use systemd-boot instead), remove PCRs 8 and 9 from
-/usr/local/etc/tpm_km (unless they're filled by your loader.
+/usr/local/etc/tpm_km (unless they're filled by your loader).
 
 ### Why secret key is being split?
 
