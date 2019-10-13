@@ -70,7 +70,7 @@ Install script will copy:
 * Put TPM reader script to your crypttab:
 
 ```
-    <container>  UUID=<FS_UUID>   none    luks,discard,keyscript=/sbin/getsecret.sh
+    <container>  UUID=<FS_UUID>   none    luks,discard,initramfs,keyscript=/sbin/getsecret.sh
 ```
 
 * Remake initial ramdisk:
