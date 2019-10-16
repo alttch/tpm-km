@@ -32,6 +32,8 @@ if [ $CHECKED -ne 1 ]; then
  exit 10
 fi
 
+PIN=
+[ -f /usr/local/etc/tpm_sealpin ] && PIN=`cat /usr/local/etc/tpm_sealpin`
 while [ ! $PIN ]; do
   PIN=$(dialog ${DIALOG_ARGS} --passwordbox "Define PIN:" 10 30 3>&1 1>&2 2>&3)
   PIN2=$(dialog ${DIALOG_ARGS} --passwordbox "Verify PIN:" 10 30 3>&1 1>&2 2>&3)

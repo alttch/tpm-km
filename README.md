@@ -99,6 +99,9 @@ You'll be prompted for PIN, twice.
 You must re-seal key into TPM every time when something your system is changed
 (depending which PCRs you use).
 
+If you want to store sealing PIN, put it to file */usr/local/etc/tpm_sealpin*
+(don't forget to set 600 permissions on it).
+
 ## FAQ
 
 ### Can I disable PIN protection?
