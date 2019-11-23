@@ -13,10 +13,10 @@ if [ -f ${KEYFILE} ]; then
   exit 1
 fi
 
-KEY=`(tr -cd '[:alnum:]' < /dev/urandom | head -c128) 2>/dev/null`
+KEY=$(tr -cd '[:alnum:]' < /dev/urandom | head -c128 2>/dev/null)
 touch ${KEYFILE} || exit 2
 chmod 000 ${KEYFILE} || exit 3
-echo -n $KEY > ${KEYFILE} || exit 4
-printf "\e[92m"
-which figlet > /dev/null && figlet -f small "KEY GENERATED" || echo "KEY GENERATED"
-printf "\e[0m"
+echo -n "$KEY" > ${KEYFILE} || exit 4
+printf "\\e[92m"
+command -v figlet > /dev/null && figlet -f small "KEY GENERATED" || echo "KEY GENERATED"
+printf "\\e[0m"
