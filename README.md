@@ -15,7 +15,7 @@ tpm-km can:
 
 ## Setup
 
-* Install *dialog*, *tpm2-tools* (make sure you have 3.x) and *figlet*
+* Install *dialog*, *tpm2-tools* (make sure you have 3.x or above) and *figlet*
   (optional)
 
 ```shell
