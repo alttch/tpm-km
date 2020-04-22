@@ -25,7 +25,9 @@ tpm-km can:
 * Clear TPM2 module and take ownership
 
 ```shell
-    sudo tpm2_takeownership -c
+    sudo tpm2_clear
+    # for tpm2 tools below v4:
+    # sudo tpm2_takeownership -c
 ```
 
 * If you have graphics splash screen - remove it, otherwise you'll not see
