@@ -151,4 +151,4 @@ It's up to you.
 ### Compatibility
 
 For tpm2_tools below 4.0 (e.g. Ubuntu 19.10 and earlier), use release 1.0. For
-tpm2 tools v4 use version in master branch.
+tpm2 tools v4 use version 1.1+ or master branch.
