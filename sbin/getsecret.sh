@@ -14,8 +14,7 @@ SUCCESS=1
 L=${#PCRS[@]}
 END=$((L-1))
 for i in $(seq 0 $END); do
-  if K=$(tpm2_nvread -x "${ADDRS[$i]}" \
-    -a "${ADDRS[$i]}" -L sha256:"${PCRS[$i]}" \
+  if K=$(tpm2_nvread -P pcr:sha256:"${PCRS[$i]}" "${ADDRS[$i]}" \
     -T "${TPM}" | tr -d '\0') && [ "$K" ]; then
     KEY="${KEY}${K}"
   else

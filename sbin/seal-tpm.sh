@@ -16,7 +16,7 @@ fi
 
 CHECKED=1
 for pcr in $(echo "${PCRS[@]}" | tr "," "\\n" | tr " " "\\n"|sort -n|uniq); do
-  VAL=$(tpm2_pcrlist -L sha256:"${pcr}" -T "${TPM}" |tail -1|awk '{ print $3 }')
+  VAL=$(tpm2_pcrread sha256:"${pcr}" -T "${TPM}" |tail -1|cut -dx -f2)
   if [ ${#VAL} -ne 64 ]; then
     print_err "Unable to check PCR ${pcr}"
     CHECKED=0
@@ -60,19 +60,17 @@ for i in $(seq 0 $END); do
   CS=$((CS+1))
   CHUNK=$(echo -n "$KEY"|cut -c$CS-$CE)
   pfile=$(mktemp /tmp/tpm-seal-policy.XXXXXXX)
-  if ! tpm2_createpolicy -P -L sha256:"${PCRS[$i]}" -f "$pfile" -T "${TPM}"; then
+  if ! tpm2_createpolicy --policy-pcr -l sha256:"${PCRS[$i]}" -L "$pfile" -T "${TPM}"; then
     print_err "Unable to create policy for ${PCRS[$i]}"
     exit 2
   fi
-  tpm2_nvrelease -x "${ADDRS[$i]}" -a 0x40000001 -T "${TPM}" > /dev/null 2>&1
-  if ! tpm2_nvdefine -x "${ADDRS[$i]}" \
-      -a 0x40000001 -L "$pfile" -s 255 -t "policyread|policywrite" -T "${TPM}"; then
+  tpm2_nvundefine -T "${TPM}" "${ADDRS[$i]}" > /dev/null 2>&1
+  if ! tpm2_nvdefine -L "$pfile" -s 255 -a "policyread|policywrite" -T "${TPM}" "${ADDRS[$i]}"; then
     print_err "Unable to define nv for ${ADDRS[$i]}"
     rm -f "$pfile"
     exit 3
   fi
-  if ! echo -n "$CHUNK" | tpm2_nvwrite -x "${ADDRS[$i]}" \
-      -a "${ADDRS[$i]}" -L sha256:"${PCRS[$i]}" -T "${TPM}"; then
+  if ! echo -n "$CHUNK" | tpm2_nvwrite -i - -T "${TPM}" -P pcr:sha256:"${PCRS[$i]}" "${ADDRS[$i]}"; then
     print_err "Unable to write key part in ${ADDRS[$i]}, PCRS: ${PCRS[$i]}"
     rm -f "$pfile"
     exit 4
