@@ -45,6 +45,8 @@ while [ -z "$PIN" ]; do
   fi
 done
 
+clear
+
 if ! KEY=$(openssl enc -aes-256-cbc \
       -pbkdf2 -k "${PIN}" -base64 < $KEYFILE | tr -d "\n" ); then
   print_err "Unable to read ${KEYFILE}"
@@ -77,7 +79,6 @@ for i in $(seq 0 $END); do
   fi
   rm -f "$pfile"
 done
-clear
 printf "\\e[92m"
 command -v figlet > /dev/null && figlet -f small "KEY SEALED" || echo "KEY SEALED"
 printf "\\e[0m"
