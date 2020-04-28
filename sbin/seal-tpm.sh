@@ -33,8 +33,10 @@ if [ $CHECKED -ne 1 ]; then
 fi
 
 PIN=
+NEED_SCREEN_CLEAR=0
 [ -f /usr/local/etc/tpm_sealpin ] && PIN=$(cat /usr/local/etc/tpm_sealpin)
 while [ -z "$PIN" ]; do
+  NEED_SCREEN_CLEAR=1
   PIN=$(dialog ${DIALOG_ARGS} --passwordbox "Define PIN:" 10 30 3>&1 1>&2 2>&3)
   PIN2=$(dialog ${DIALOG_ARGS} --passwordbox "Verify PIN:" 10 30 3>&1 1>&2 2>&3)
   [ -z "$PIN" ] || [ -z "$PIN2" ] && exit 0
@@ -45,7 +47,7 @@ while [ -z "$PIN" ]; do
   fi
 done
 
-clear
+[ ${NEED_SCREEN_CLEAR} -eq 1 ] && clear
 
 if ! KEY=$(openssl enc -aes-256-cbc \
       -pbkdf2 -k "${PIN}" -base64 < $KEYFILE | tr -d "\n" ); then
