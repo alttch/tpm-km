@@ -13,6 +13,7 @@ case $1 in
 esac
 . /usr/share/initramfs-tools/hook-functions
 copy_exec /usr/bin/tpm2_nvread || exit 1
+copy_exec /usr/bin/tpm2_nvundefine || exit 1
 cp -v /usr/lib/x86_64-linux-gnu/libtss2-tcti-device.so* ${DESTDIR}/usr/lib/ || exit 1
 copy_exec /bin/bash || exit 1
 copy_exec /sbin/getsecret.sh || exit 1
