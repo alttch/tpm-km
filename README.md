@@ -148,6 +148,8 @@ In tpm-km, PIN is just called "PIN", because most of encrypted disk mangers use
 numeric PINs. But no - it can be alpha-numeric and include special symbols.
 It's up to you.
 
+WARNING: using PIN before v1.2 may be insecure.
+
 ### Compatibility
 
 For tpm2_tools below 4.0 (e.g. Ubuntu 19.10 and earlier), use release 1.0. For
