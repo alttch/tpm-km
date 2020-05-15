@@ -106,10 +106,33 @@ If you want to store sealing PIN, put it to file */usr/local/etc/tpm_sealpin*
 
 ## FAQ
 
+### What PIN is used for?
+
+PIN is used to add additional protection to your system. Without PIN attacker
+can not boot your system to login prompt, so he can not use any local or
+network exploits.
+
+When booted, there are 3 attempts to enter PIN, after the 3rd attempt, the key
+is deleted from TPM.
+
+WARNING: using PIN before v1.2 may be insecure.
+
+### Can I boot my system without PIN?
+
+If you've forgot your PIN, just press Cancel at PIN prompt dialog. The key will
+be deleted from TPM and the script fall back to password prompt. After booting,
+you may re-seal keys back to TPM.
+
 ### Can I disable PIN protection?
 
-This is insecure, but yes, of course you can. Put some default PIN into
+This is insecure, but yes, of course you can. Put a default PIN into
 configuration file and that's it. Don't forget to re-create initrd as well.
+
+### Should PIN be only numeric?
+
+In tpm-km, PIN is just called "PIN", because most of encrypted disk mangers use
+numeric PINs. But no - it can be alpha-numeric and include special symbols.
+It's up to you.
 
 ### What can be configured?
 
@@ -141,14 +164,6 @@ By default, tpm-km splits key in 2 chunks. TPM 2.0 specification doesn't
 allow TPM policy with more than 8 PCRs at once. With 2 chunks you can use
 almost all filled PCRs and make system protection much stronger. Just make sure
 PCRs 0,2,4,7 (and 9 for grub) are present in both sets.
-
-### Should PIN be only numeric?
-
-In tpm-km, PIN is just called "PIN", because most of encrypted disk mangers use
-numeric PINs. But no - it can be alpha-numeric and include special symbols.
-It's up to you.
-
-WARNING: using PIN before v1.2 may be insecure.
 
 ### Compatibility
 
