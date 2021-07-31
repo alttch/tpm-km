@@ -169,3 +169,18 @@ PCRs 0,2,4,7 (and 9 for grub) are present in both sets.
 
 For tpm2_tools below 4.0 (e.g. Ubuntu 19.10 and earlier), use release 1.0. For
 tpm2 tools v4 use version 1.1+ or master branch.
+
+### No tpm device during boot
+
+If initramfs fails with "/dev/tpm0 not found" error, make sure TPM modules are
+included into initial ram disk. Add the following to
+/etc/initramfs-tools/modules:
+
+```
+tpm
+tpm_crb
+tpm_tis
+tpm_tis_core
+rng_core
+ccp
+```
