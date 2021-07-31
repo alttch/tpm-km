@@ -17,7 +17,7 @@ L=${#PCRS[@]}
 END=$((L-1))
 for i in $(seq 0 $END); do
   if K=$(tpm2_nvread -P pcr:sha256:"${PCRS[$i]}" "${ADDRS[$i]}" \
-    -T "${TPM}" | tr -d '\0') && [ "$K" ]; then
+    -T "${TPM}" | tr -d '\0' | tr -d '\377' ) && [ "$K" ]; then
       KEY="${KEY}${K}"
     else
       printf "\\e[91m" >&2
