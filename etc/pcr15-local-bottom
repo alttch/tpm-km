@@ -1,0 +1,10 @@
+#!/bin/sh
+PREREQ=""
+prereqs() { echo "$PREREQ"; }
+case "$1" in prereqs) prereqs; exit 0;; esac
+# Measurement-only boots may continue; keyscript itself fails closed.
+# /run/ flag is private initramfs state, never loaded from rootfs.
+/sbin/tpm-km-measure-rootfs || {
+ echo "tpm-km: PCR15 measurement FAILED; keyscript will refuse unlock" >&2
+ exit 1
+}

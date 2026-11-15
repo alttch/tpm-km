@@ -1,0 +1,29 @@
+#!/bin/sh
+# initramfs-tools build hook. Optional, installed by --with-pcr15.
+PREREQ=""
+prereqs() { echo "$PREREQ"; }
+case "$1" in prereqs) prereqs; exit 0;; esac
+set -e
+. /usr/share/initramfs-tools/hook-functions
+copy_exec /usr/bin/python3 /usr/bin/python3
+pyver=$(/usr/bin/python3 -c 'import sys; print("python%d.%d" % sys.version_info[:2])')
+# Isolated Python (-I -S), all stdlib and extension dependencies are bundled.
+mkdir -p "${DESTDIR}/usr/lib"
+cp -a "/usr/lib/$pyver" "${DESTDIR}/usr/lib/"
+find "/usr/lib/$pyver/lib-dynload" -name '*.so' -type f | while IFS= read -r so; do copy_exec "$so"; done
+copy_exec /usr/bin/tpm2_pcrextend
+copy_exec /usr/bin/tpm2_pcrread
+copy_exec /usr/bin/mount
+copy_exec /usr/bin/umount
+copy_exec /usr/bin/readlink
+copy_exec /usr/bin/stat
+copy_exec /usr/bin/sha256sum
+copy_exec /usr/bin/cat
+copy_exec /usr/bin/touch
+copy_exec /usr/bin/sleep
+copy_exec /usr/bin/mkdir
+copy_exec /bin/bash
+copy_exec /usr/local/sbin/tpm-km-measure-rootfs /sbin/tpm-km-measure-rootfs
+mkdir -p "${DESTDIR}/usr/local/lib/tpm-km" "${DESTDIR}/etc/tpm-km"
+cp /usr/local/lib/tpm-km/manifest.py "${DESTDIR}/usr/local/lib/tpm-km/"
+cp /etc/tpm-km/pcr15-files.list "${DESTDIR}/etc/tpm-km/"

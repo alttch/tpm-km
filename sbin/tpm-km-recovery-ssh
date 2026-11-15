@@ -1,0 +1,10 @@
+#!/bin/sh
+set -eu
+[ -f /scripts/functions ] || { echo "Recovery is initramfs-only" >&2; exit 1; }
+[ -x /lib/tpm-km/start-dropbear ] || exit 1
+# mkdir provides atomic once-only start, including concurrent crypt devices.
+if mkdir /run/tpm-km-recovery-started 2>/dev/null; then
+  /lib/tpm-km/start-dropbear </dev/null >/dev/console 2>&1
+fi
+# Use the stock FIFO/askpass protocol consumed by cryptroot-unlock.
+exec /lib/cryptsetup/askpass "TPM unlock failed. Recovery passphrase: "

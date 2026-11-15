@@ -9,6 +9,16 @@ function print_err {
 [ -f /usr/local/etc/tpm_km ] && source /usr/local/etc/tpm_km
 [ -f /etc/tpm_km ] && source /etc/tpm_km
 
+# Opt-in rootfs measurement is required in every NV policy.
+if [ "${PCR15_ENABLED:-0}" = 1 ]; then
+  for i in "${!PCRS[@]}"; do
+    case ",${PCRS[$i]}," in *,15,*) ;; *) PCRS[$i]="${PCRS[$i]},15";; esac
+  done
+  [ -f /run/tpm-km/pcr15-done ] || {
+    echo "Boot the measurement initramfs before sealing" >&2; exit 12;
+  }
+fi
+
 if [ -z "$PCRS" ] || [ -z "$ADDRS" ] || [ -z "$KEYFILE" ] || [ -z "$TPM" ]; then
   print_err "TPM params not loaded, config missing?"
   exit 11

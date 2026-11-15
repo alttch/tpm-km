@@ -1,0 +1,59 @@
+# Absolute literal paths; directories recurse, without following symlinks.
+# Missing paths are measured too. No globs; use directories for new drop-ins.
+# Critical subset, NOT whole-rootfs integrity. Extend for your execution paths.
+/etc/passwd
+/etc/shadow
+/etc/group
+/etc/gshadow
+/etc/pam.d
+/etc/nsswitch.conf
+/etc/sudoers
+/etc/sudoers.d
+/etc/ssh
+/root/.ssh
+/etc/systemd/system
+/etc/cron.d
+/etc/crontab
+/etc/cron.daily
+/etc/cron.hourly
+/etc/cron.weekly
+/etc/cron.monthly
+/etc/rc.local
+/etc/init.d
+/etc/ld.so.preload
+/etc/ld.so.conf
+/etc/ld.so.conf.d
+/etc/ld.so.cache
+/etc/fstab
+/etc/crypttab
+/etc/modules
+/etc/modules-load.d
+/etc/modprobe.d
+/etc/udev/rules.d
+/usr/local/etc/tpm_km
+/usr/local/sbin
+/usr/local/bin
+/usr/sbin/getsecret.sh
+
+# Executable trust closure for Ubuntu merged-/usr hosts (may increase boot time).
+/usr/bin
+/usr/sbin
+/usr/lib
+/etc/environment
+/etc/profile
+/etc/profile.d
+/etc/bash.bashrc
+/root/.profile
+/root/.bashrc
+/etc
+
+# Legacy executable roots: hash the symlink itself on merged-/usr;
+# recursively scan actual directories on non-merged systems.
+/bin
+/sbin
+/lib
+/lib64
+/usr/lib64
+/usr/libexec
+/usr/local/lib
+/usr/local/libexec

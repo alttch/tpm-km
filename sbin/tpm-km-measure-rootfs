@@ -1,0 +1,43 @@
+#!/bin/bash
+# Runtime code resides in authenticated/measured initramfs, not measured rootfs.
+set -euo pipefail
+export PATH=/usr/sbin:/usr/bin:/sbin:/bin
+export LC_ALL=C
+unset PYTHONPATH PYTHONHOME
+[ -f /scripts/functions ] || { echo "Measurement must run in initramfs" >&2; exit 1; }
+[ -d /run/tpm-km ] || mkdir -m 700 /run/tpm-km
+if [ -f /run/tpm-km/pcr15-done ]; then exit 0; fi
+[ -f /etc/tpm_km ] && source /etc/tpm_km
+TPM=${TPM:-device:/dev/tpmrm0}
+target=/run/tpm-km/root
+mkdir -p "$target"
+rootdev=
+for arg in $(cat /proc/cmdline); do
+ case "$arg" in root=*) rootdev=${arg#root=};; esac
+done
+case "$rootdev" in
+ LABEL=*) rootdev="/dev/disk/by-label/${rootdev#LABEL=}";;
+ UUID=*) rootdev="/dev/disk/by-uuid/${rootdev#UUID=}";;
+ PARTUUID=*) rootdev="/dev/disk/by-partuuid/${rootdev#PARTUUID=}";;
+ /dev/*) ;;
+ *) echo "tpm-km: cannot resolve cleartext root device" >&2; exit 1;;
+esac
+# Wait for udev device links, do not source anything from the measured root.
+for ((i=0;i<30;i++)); do [ -b "$rootdev" ] && break; sleep 1; done
+[ -b "$rootdev" ] || { echo "tpm-km: root device unavailable" >&2; exit 1; }
+mount -o ro "$rootdev" "$target"
+trap 'umount "$target"' EXIT
+digest=$(/usr/bin/python3 -I -S /usr/local/lib/tpm-km/manifest.py "$target" /etc/tpm-km/pcr15-files.list)
+[[ "$digest" =~ ^[0-9a-f]{64}$ ]]
+# One domain/version event, then the actual manifest digest.
+domain=$(printf 'tpm-km:rootfs:v1' | sha256sum)
+domain=${domain%% *}
+tpm2_pcrextend -T "$TPM" "15:sha256=$domain"
+tpm2_pcrextend -T "$TPM" "15:sha256=$digest"
+printf '%s\n' "$digest" > /run/tpm-km/rootfs.sha256
+tpm2_pcrread -T "$TPM" sha256:15 > /run/tpm-km/pcr15.txt
+# Set completion only after successful extend and a successful unmount.
+umount "$target"
+trap - EXIT
+touch /run/tpm-km/pcr15-done
+echo "tpm-km: PCR15 rootfs measured $digest" > /dev/kmsg

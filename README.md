@@ -104,6 +104,14 @@ changed (depending which PCRs are used).
 If you want to store sealing PIN, put it to file */usr/local/etc/tpm_sealpin*
 (don't forget to set 600 permissions on it).
 
+## Recovery SSH (experimental draft)
+
+For the opt-in recovery SSH draft, see the
+[step-by-step recovery guide (Ukrainian)](docs/recovery-ssh.md) and
+[implementation status and test evidence](docs/recovery-ssh-design.md).
+This recovery mode preserves TPM NV; the legacy PIN cancellation behavior
+described below is not its recovery procedure.
+
 ## FAQ
 
 ### What is purpose of PIN?

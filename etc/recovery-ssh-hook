@@ -1,0 +1,11 @@
+#!/bin/sh
+PREREQ="dropbear"
+prereqs() { echo "$PREREQ"; }
+case "$1" in prereqs) prereqs; exit 0;; esac
+set -e
+. /usr/share/initramfs-tools/hook-functions
+# Preserve the stock implementation, but start it only after TPM failure.
+test -x "$DESTDIR/scripts/init-premount/dropbear"
+mkdir -p "$DESTDIR/lib/tpm-km"
+mv "$DESTDIR/scripts/init-premount/dropbear" "$DESTDIR/lib/tpm-km/start-dropbear"
+copy_exec /usr/local/sbin/tpm-km-recovery-ssh /sbin/tpm-km-recovery-ssh

@@ -21,5 +21,11 @@ copy_exec /usr/bin/openssl || exit 1
 copy_exec /usr/bin/dialog || exit 1
 cp -v /usr/local/etc/tpm_km ${DESTDIR}/etc/ || exit 1
 mkdir -p ${DESTDIR}/lib/terminfo/l || exit 1
-cp -v /lib/terminfo/l/linux ${DESTDIR}/lib/terminfo/l/ || exit 1
+for term in /lib/terminfo/l/linux /usr/share/terminfo/l/linux; do
+  if [ -f "$term" ]; then
+    cp "$term" "${DESTDIR}/lib/terminfo/l/" || exit 1
+    break
+  fi
+done
+[ -f "${DESTDIR}/lib/terminfo/l/linux" ] || exit 1
 exit 0
